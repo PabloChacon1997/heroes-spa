@@ -1,44 +1,26 @@
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
-
-import { HeroesApp } from "../HeroesApp";
-
-import { DcPage, MarvelPage } from "../heroes";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {  ErrorPage} from "../heroes";
 import { LoginPage } from "../auth";
+import { childrenHeroesRoutes } from "./HeroesRouter";
+import { HeroesRoutes } from "../heroes/routes/HeroesRoutes";
 
 
-export const router = createBrowserRouter([
+const routesConfig = createBrowserRouter([
   
   {
+    path: "login",
+    element: <LoginPage />,
+    errorElement: <ErrorPage />,
+  },
+  {
     path: "/",
-    element: <HeroesApp />,
-    children: [
-
-      {
-        path: "/marvel",
-        element: <MarvelPage />,
-      },
-      {
-        path: "/dc",
-        element: <DcPage />,
-      },
-      {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/",
-        element: <Navigate to={"/marvel"} />,
-      },
-    ]
-  
-},
+    element: <HeroesRoutes />,
+    children: childrenHeroesRoutes,
+    errorElement: <ErrorPage />
+  }
 ]);
 
 
 export const AppRoute = () => {
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  )
+  return <RouterProvider router={routesConfig} />
 }
